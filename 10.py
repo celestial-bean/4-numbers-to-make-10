@@ -5,50 +5,14 @@ except ImportError:
         os.system("pip install random")
         import random
 
-operators=["+","·","÷","-"]
+operators=["+","*","/","-"]
 triedCombos=[]
-numbers=[int(input("number "+str(i+1)+": ")) for i in range(4)]
+numbers=[input("number "+str(i+1)+": ") for i in range(4)]
 
 def calculate(first,sec,third):
-        value=0
         try:
-                match(first):
-                        case "+":
-                                value=numbers[0]+numbers[1]
-
-                        case "·":
-                                value=numbers[0]*numbers[1]
-
-                        case "÷":
-                                value=numbers[0]/numbers[1]
-
-                        case "-":
-                                value=numbers[0]-numbers[1]
-
-                match(sec):
-                        case "+":
-                                value+=numbers[2]
-
-                        case "·":
-                                value*=numbers[2]
-
-                        case "÷":
-                                value/=numbers[2]
-
-                        case "-":
-                                value-=numbers[2]
-
-                match(third):
-                        case "+":
-                                value+=numbers[3]                                                                 
-                        case "·":
-                                value*=numbers[3]
-
-                        case "÷":
-                                value/=numbers[3]
-
-                        case "-":
-                                value-=numbers[3]
+               value=eval(numbers[0]+first+numbers[1]+sec+numbers[2]+third+numbers[3])
+               
         except ZeroDivisionError:
                 print("Failed to divide by zero")
 
