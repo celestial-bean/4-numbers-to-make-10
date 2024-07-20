@@ -1,4 +1,3 @@
-GNU nano 7.2                                 10.py
 import os
 try:
     import time
