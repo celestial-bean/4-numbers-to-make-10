@@ -1,40 +1,39 @@
-                                                           10.py
+GNU nano 7.2                                 10.py
 import os
 try:
-    import random
+    import time
 except ImportError:
-    os.system("pip install random")
-    import random
+    os.system("pip install time")
+    import time
 
-operators = ["+", "*", "/", "-"]
-triedCombos = []
-numbers = [input("number " + str(i + 1) + ": ") for i in range(4)]
-
-def calculate(first, sec, third):
+ops = ["+", "*", "/", "-"]
+def calculate(num1, num2, num3, num4, op1, op2, op3, parenthesis, end):
+    result=0
     try:
-        value = eval(numbers[0] + first + numbers[1] + sec + numbers[2] + third + numbers[3])
+        calc=nums[num1] + ops[op1] + nums[num2] + ops[op2] + nums[num3] + ops[op3] +nums[num4]
+        if (parenthesis != 6):
+            calc=calc[:parenthesis]+"("+calc[parenthesis:end]+")"+calc[end:]
+        result= eval(calc)
     except ZeroDivisionError:
-        print("Failed to divide by zero")
-
-    if value == 10:
-        print(str(numbers[0]) + first + str(numbers[1]) + sec + str(numbers[2]) + third + str(numbers[3]))
-
+        print("Can't divide by zero")
+    #print(calc)
+    if result == 10:
+        print(calc)
+#4+6+8+3
 def main():
-    while len(triedCombos) != 1025:
-        for i in range(4):
-            for x in range(4):
-                for o in range(4):
-                    calculate(operators[i], operators[x], operators[o])
-
-        random.shuffle(numbers)
-        combo = "".join(str(numbers))
-        while combo in triedCombos:
-            random.shuffle(numbers)
-            combo = "".join(str(numbers))
-        triedCombos.append(combo)
-
+    num1=0
+    num2=1
+    num3=2
+    num4=3
+    for op1 in range(4):
+        for op2 in range(4):
+            for op3 in range(4):
+                for parenthesis in range(0,8,2):
+                    for end in  range(parenthesis+3, 8, 2):
+                        calculate(num1,num2,num3,num4,op1,op2,op3,parenthesis, end)
 tryAgain = "y"
 while tryAgain == "y":
+    nums = [input("number " + str(i + 1) + ": ") for i in range(4)]
     main()
     tryAgain = input("Try again? (y/n) ").lower()
 quit()
