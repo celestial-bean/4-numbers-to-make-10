@@ -9,7 +9,7 @@ try:
 except ImportError:
     os.system("pip install random")
     import random
-numCombos=[]
+answers=[]
 total=0
 ops = ["+", "*", "/", "-"]
 def calculate(num1, num2, num3, num4, op1, op2, op3, parenthesis, end):
@@ -30,15 +30,19 @@ def calculate(num1, num2, num3, num4, op1, op2, op3, parenthesis, end):
         #print("Can't divide by zero")
         pass
     #print(calc)
-    if result == 10:
+    if result == 10 and not calc in answers:
         total+=1
-        #print(calc+"  "+str(len(numCombos)))
+        answers.append(calc)
         print(calc)
         pass
 #4+6+8+3
 def main(nums):
-    total=0
-    while len(numCombos)<=256:
+    global total
+    total = 0
+    count=0
+    global  answers
+    answers=[]
+    while count<=256:
         for op1 in range(4):
             for op2 in range(4):
                 for op3 in range(4):
@@ -47,10 +51,8 @@ def main(nums):
                         for end in  range(parenthesis, 7, 2):
                             #print(parenthesis)
                             calculate(0,1,2,3,op1,op2,op3,parenthesis,end)
-        numCombos.append([nums])
+        count=count+1
         random.shuffle(nums)
-        while nums in numCombos:
-            random.shuffle(nums)
 tryAgain = "y"
 while tryAgain == "y":
     nums = [input("number " + str(i + 1) + ": ") for i in range(4)]
@@ -58,5 +60,4 @@ while tryAgain == "y":
     print()
     print("Total: "+str(total))
     tryAgain = input("Try again? (y/n) ").lower()
-    numCombos=[]
 quit()
