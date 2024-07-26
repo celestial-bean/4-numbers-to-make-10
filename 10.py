@@ -1,5 +1,10 @@
 import os
 try:
+    import itertools
+except ImportError:
+    os.system("pip install itertools")
+    import itertools
+try:
     import time
 except ImportError:
     os.system("pip install time")
@@ -9,40 +14,38 @@ try:
 except ImportError:
     os.system("pip install random")
     import random
+
 answers=[]
-total=0
 ops = ["+", "*", "/", "-"]
 def calculate(num1, num2, num3, num4, op1, op2, op3, parenthesis, end):
-    global total
     result=0
-    if (parenthesis==0 and end==7):
-        parenthesis=6
     try:
-        calc=nums[num1] + ops[op1] + nums[num2] + ops[op2] + nums[num3] + ops[op3] +nums[num4]
+        calc=num1 + ops[op1] + num2 + ops[op2] + num3 + ops[op3] +num4
         #print(parenthesis)
         if (parenthesis != 6):
             calc=calc[:parenthesis]+"("+calc[parenthesis:3+end]+")"+calc[3+end:]
         else:
             #print(calc)
             pass
+        if(calc[0]=="(" and calc[-1]==")"):
+            calc=calc[1:-1]
         result=eval(calc)
     except ZeroDivisionError:
         #print("Can't divide by zero")
         pass
     #print(calc)
     if result == 10 and not calc in answers:
-        total+=1
         answers.append(calc)
         print(calc)
         pass
 #4+6+8+3
 def main(nums):
-    global total
-    total = 0
+    combos=list(itertools.permutations(nums))
     count=0
     global  answers
     answers=[]
-    while count<=256:
+    while count<len(combos):
+        nums=combos[count]
         for op1 in range(4):
             for op2 in range(4):
                 for op3 in range(4):
@@ -50,14 +53,13 @@ def main(nums):
                         #print(parenthesis)
                         for end in  range(parenthesis, 7, 2):
                             #print(parenthesis)
-                            calculate(0,1,2,3,op1,op2,op3,parenthesis,end)
+                            calculate(*nums,op1,op2,op3,parenthesis,end)
         count=count+1
-        random.shuffle(nums)
 tryAgain = "y"
 while tryAgain == "y":
     nums = [input("number " + str(i + 1) + ": ") for i in range(4)]
     main(nums)
     print()
-    print("Total: "+str(total))
+    print("Total: "+str(len(answers)))
     tryAgain = input("Try again? (y/n) ").lower()
 quit()
