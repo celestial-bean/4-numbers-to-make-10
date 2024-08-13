@@ -14,6 +14,20 @@ try:
 except ImportError:
     os.system("pip install random")
     import random
+try:
+    from pyscript import when
+    from pyscript import element, document
+    HTMLoutput=document.querySelector(".HTMLoutput")
+    submit=element["submit"]
+    website=True
+except ImportError:
+    website=False
+
+def output(value):
+    if website:
+        HTMLoutput.textContent+=value
+    else:
+        print(value)
 
 answers=[]
 ops = ["+", "*", "/", "-"]
@@ -55,11 +69,20 @@ def main(nums):
                             #print(parenthesis)
                             calculate(*nums,op1,op2,op3,parenthesis,end)
         count=count+1
+    
 tryAgain = "y"
 while tryAgain == "y":
-    nums = [input("number " + str(i + 1) + ": ") for i in range(4)]
+    if website:
+        nums=filter(lambda x: x.isdigit(), document.querySelector(".HTMLinput").value)
+    else:
+        nums = [input("number " + str(i + 1) + ": ") for i in range(4)]
     main(nums)
     print()
     print("Total: "+str(len(answers)))
-    tryAgain = input("Try again? (y/n) ").lower()
+    if website:
+        @when("click", submit)
+        def click(event):
+            main()
+    else:
+        tryAgain = input("Try again? (y/n) ").lower()
 quit()
