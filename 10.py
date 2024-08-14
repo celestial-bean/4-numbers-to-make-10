@@ -1,33 +1,24 @@
-import os
+import itertools
+
 try:
-    import itertools
-except ImportError:
-    os.system("pip install itertools")
-    import itertools
-try:
-    import time
-except ImportError:
-    os.system("pip install time")
-    import time
-try:
-    import random
-except ImportError:
-    os.system("pip install random")
-    import random
-try:
-    from pyscript import when
-    from pyscript import element, document
+    from pyscript import document
     HTMLoutput=document.querySelector(".HTMLoutput")
-    submit=element["submit"]
     website=True
 except ImportError:
     website=False
 
+def click(event):
+    HTMLoutput.innerHTML=""
+    nums=filter(lambda x: x.isdigit(), document.querySelector(".HTMLinput").value)
+    print(event)
+    main(nums)
+
+print(f'website: {website}')
 def output(value=""):
     if website:
-        HTMLoutput.textContent+=value
+        HTMLoutput.innerHTML+=value+"</br>"
     else:
-        output(value)
+        print(value)
 
 answers=[]
 ops = ["+", "*", "/", "-"]
@@ -69,20 +60,12 @@ def main(nums):
                             #output(parenthesis)
                             calculate(*nums,op1,op2,op3,parenthesis,end)
         count=count+1
-    
-tryAgain = "y"
-while tryAgain == "y":
-    if website:
-        nums=filter(lambda x: x.isdigit(), document.querySelector(".HTMLinput").value)
-    else:
-        nums = [input("number " + str(i + 1) + ": ") for i in range(4)]
-    main(nums)
     output()
     output("Total: "+str(len(answers)))
-    if website:
-        @when("click", submit)
-        def click(event):
-            main()
-    else:
+if not website:
+    tryAgain = "y"
+    while tryAgain == "y":
+        nums = [input("number " + str(i + 1) + ": ") for i in range(4)]
+        main(nums)
         tryAgain = input("Try again? (y/n) ").lower()
-quit()
+    quit()
